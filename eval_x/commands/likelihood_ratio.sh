@@ -1,5 +1,5 @@
 ratio_source=true
-PYTHONPATH=./:$PYTHONPATH python eval_x/create_naive_bayes_data.py --data $data --data_dir data --model_path glue_models --eval_model $eval_model --ratio_source $ratio_source --truncate_ratio 
+PYTHONPATH=./:$PYTHONPATH python eval_x/create_likelihood_ratio_data.py --data $data --data_dir data --model_path glue_models --eval_model $eval_model --ratio_source $ratio_source --truncate_ratio 
 
 for file in data/$data/$explainer/*_tokens
 do 
