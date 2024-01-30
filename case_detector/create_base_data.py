@@ -1,11 +1,9 @@
 import numpy as np
 import json
-from rationale_benchmark.utils import (
-    load_jsonl
-)
 import argparse
 import os
 import pdb
+from file_utils import load_jsonl
 
 def main():
 

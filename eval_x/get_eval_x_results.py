@@ -7,14 +7,10 @@ from collections import Counter
 import operator
 import argparse
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-# module_path = os.path.abspath(os.path.join('..'))
-# if module_path not in sys.path:
-#     sys.path.append(module_path)
-from rationale_benchmark.utils import load_jsonl
+from file_utils import load_jsonl
 
 from datasets import load_dataset
 import pickle
-# explainer = 'random'
 
 def main():
     parser = argparse.ArgumentParser(description="""Computes rationale and final class classification scores""", formatter_class=argparse.RawTextHelpFormatter)

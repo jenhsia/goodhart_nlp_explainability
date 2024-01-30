@@ -198,7 +198,7 @@ def main():
     parser.add_argument('--model_path', dest='model_path', required=True)
     parser.add_argument('--num_tokens', dest='num_tokens', default= 1, type = int, required=False)
     parser.add_argument('--eval_model', dest='eval_model', required=True)
-    parser.add_argument('--approx_model', dest='approx_model', required=True, hel='Which of {train,val,test} are we scoring on?')
+    parser.add_argument('--approx_model', dest='approx_model', required=True)
     parser.add_argument('--token_rank', dest='token_rank', default= 'top', required=False)
     
     args = parser.parse_args()
