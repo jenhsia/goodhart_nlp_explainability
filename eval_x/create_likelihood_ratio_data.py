@@ -7,7 +7,7 @@ from collections import Counter
 import operator
 import argparse
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from rationale_benchmark.utils import load_jsonl
+from file_utils import load_jsonl
 from datasets import load_dataset
 import pickle
 
@@ -150,7 +150,7 @@ def get_pos_neg_prob(dataset, pred_labels, truncate = True):
     neg_words = []
     for i, doc in enumerate(dataset):
         pred_label = pred_labels[i]
-        
+
         if (pred_label == 1.0):
             pos_words.extend(doc['text'].split())
         else:

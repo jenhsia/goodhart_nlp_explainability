@@ -8,7 +8,7 @@ import operator
 import argparse
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from rationale_benchmark.utils import load_jsonl
+from file_utils import load_jsonl
 from datasets import load_dataset
 import pickle
 
