@@ -5,6 +5,7 @@ import json
 from sklearn.metrics import roc_auc_score
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from datasets import load_dataset
+import argparse
 
 def main():
     parser = argparse.ArgumentParser(description="""Computes rationale and final class classification scores""", formatter_class=argparse.RawTextHelpFormatter)

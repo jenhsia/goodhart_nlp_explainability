@@ -12,6 +12,7 @@ def main():
     parser.add_argument('--dataset', dest='dataset', required=True)
     parser.add_argument('--data_dir', dest='data_dir', required=True)
     parser.add_argument('--results_dir', dest='results_dir', required=True)
+    parser.add_argument('--eval_model_dir', dest='eval_model_dir', required=True)
     parser.set_defaults(truncate_ratio=False)
     args = parser.parse_args()
 
@@ -39,7 +40,7 @@ def main():
         for eval_model_name in eval_model_names:
 
             print(eval_model_name, token_dir)
-            eval_model_dir = os.path.join('../glue_models', args.dataset, eval_model_name)
+            eval_model_dir = os.path.join(args.eval_model_dir, args.dataset, eval_model_name)
             eval_tokenizer = AutoTokenizer.from_pretrained(eval_model_dir)
 
             eval_model = AutoModelForSequenceClassification.from_pretrained(eval_model_dir)

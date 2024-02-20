@@ -186,20 +186,20 @@ def get_pos_neg_prob(dataset, pred_labels, truncate = True):
 
 def main():
     parser = argparse.ArgumentParser(description="""Computes rationale and final class classification scores""", formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('--data', dest='data', required=True)
+    parser.add_argument('--dataset', dest='dataset', required=True)
     parser.add_argument('--data_dir', dest='data_dir', required=True)
-    parser.add_argument('--model_path', dest='model_path', required=True)
-    parser.add_argument('--eval_model', dest='eval_model', required=True)
+    parser.add_argument('--eval_model_dir', dest='eval_model_dir', required=True, help = 'Directory where eval-x models are saved')
+    parser.add_argument('--eval_model_name', dest='eval_model_name', required=True, help = 'Name of eval-x model (e.g., eval-x-33)')
     parser.add_argument('--ratio_source', dest='ratio_source', required=True)
     parser.add_argument('--truncate_ratio',action ='store_true')
     parser.set_defaults(truncate_ratio=False)
     args = parser.parse_args()
-    model_path = os.path.join(args.model_path, args.data)
-    eval_model_path = os.path.join(model_path, args.eval_model)
+    model_path = os.path.join(args.eval_model_dir, args.dataset)
+    eval_model_path = os.path.join(model_path, args.eval_model_name)
     print(eval_model_path)
     print('model_path', model_path)
 
-    data_dir = os.path.join(args.data_dir, args.data)
+    data_dir = os.path.join(args.data_dir, args.dataset)
     data_files = {"train": os.path.join(data_dir, 'train.json'), "val": os.path.join(data_dir, 'val.json'),"test": os.path.join(data_dir, 'test.json')}
     original_dataset = load_dataset("json", data_files=data_files)
 
@@ -213,13 +213,13 @@ def main():
         ratio_pn_prob = get_pos_neg_prob(original_dataset['train'],train_labels, truncate = args.truncate_ratio)
 
     elif (args.ratio_source == 'pred'):
-        train_pred_labels = np.load(os.path.join(args.model_path, args.data, 'original_input', 'train_predicted_labels_None.npy'))
+        train_pred_labels = np.load(os.path.join(args.model_dir, args.dataset, 'original_input', 'train_predicted_labels_None.npy'))
         ratio_pn_prob = get_pos_neg_prob(original_dataset['train'], train_pred_labels, truncate = args.truncate_ratio)
 
     splits = ['test']
-    data_dir = os.path.join(args.data_dir, args.data, 'naive_bayes_'+args.ratio_source)
+    data_dir = os.path.join(args.data_dir, args.dataset, 'naive_bayes_'+args.ratio_source)
     if (args.truncate_ratio):
-        data_dir = os.path.join(args.data_dir, args.data, 'naive_bayes_'+args.ratio_source +'_truncate')
+        data_dir = os.path.join(args.data_dir, args.dataset, 'naive_bayes_'+args.ratio_source +'_truncate')
     file = os.path.join(data_dir, "ratio_dictionary.json")
     if not os.path.isdir(data_dir):
         os.makedirs(data_dir)
@@ -234,9 +234,9 @@ def main():
         for split in splits:
             print('rat len ', k)
             if (args.truncate_ratio):
-                sub_dir = os.path.join(args.data, 'naive_bayes_'+args.ratio_source + '_truncate', str(k)+'_tokens')
+                sub_dir = os.path.join(args.dataset, 'naive_bayes_'+args.ratio_source + '_truncate', str(k)+'_tokens')
             else:
-                sub_dir = os.path.join(args.data, 'naive_bayes_'+args.ratio_source, str(k)+'_tokens')
+                sub_dir = os.path.join(args.dataset, 'naive_bayes_'+args.ratio_source, str(k)+'_tokens')
             eval_dir = os.path.join('eval_x', sub_dir)
             data_dir = os.path.join(args.data_dir, sub_dir)
             if not os.path.isdir(eval_dir):
@@ -245,7 +245,7 @@ def main():
                 os.makedirs(data_dir)
             print('eval_dir', eval_dir)
             print('data_dir', data_dir)
-            pred_labels = np.load(os.path.join(args.model_path, args.data, 'original_input', split + '_predicted_labels_None.npy'))
+            pred_labels = np.load(os.path.join(args.model_dir, args.dataset, 'original_input', split + '_predicted_labels_None.npy'))
 
             crate_data_json(dataset = original_dataset, pred_labels = pred_labels, \
                             model = eval_model, tokenizer = eval_tokenizer, \

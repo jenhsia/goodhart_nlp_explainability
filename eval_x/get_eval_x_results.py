@@ -21,18 +21,18 @@ def main():
     parser.add_argument('--eval_model', dest='eval_model', required=True)
 
     args = parser.parse_args()
-    model_path = os.path.join(args.model_path, args.data)
+    model_path = os.path.join(args.model_path, args.dataset)
     model_path = os.path.join(model_path, args.eval_model)
     print('model_path', model_path)
 
-    data_dir = os.path.join(args.data_dir, args.data)
+    data_dir = os.path.join(args.data_dir, args.dataset)
     data_files = {"train": os.path.join(data_dir, 'train.json'), "val": os.path.join(data_dir, 'val.json'),"test": os.path.join(data_dir, 'test.json')}
     original_dataset = load_dataset("json", data_files=data_files)
 
     if (args.explainer == 'full'):
         explainer_dataset = original_dataset
     else:
-        data_dir = os.path.join(args.data_dir, args.data, args.explainer)
+        data_dir = os.path.join(args.data_dir, args.dataset, args.explainer)
         # data_files = {"train": os.path.join(data_dir, 'train.json'), "val": os.path.join(data_dir, 'val.json'),"test": os.path.join(data_dir, 'test.json')}
         data_files = {"test": os.path.join(data_dir, 'test.json')}
         explainer_dataset = load_dataset("json", data_files=data_files)
@@ -52,7 +52,7 @@ def main():
         print('split', split)
         eval_x_pred_labels = []
         
-        pred_labels = np.load(os.path.join(args.model_path, args.data, 'original_input', split + '_predicted_labels_None.npy'))
+        pred_labels = np.load(os.path.join(args.model_path, args.dataset, 'original_input', split + '_predicted_labels_None.npy'))
         batch_size = 8
         for i, doc in enumerate(explainer_dataset[split]):
             query = original_dataset[split][i]['query']
